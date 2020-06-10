@@ -290,7 +290,7 @@ index cd987c8a..fd53a440 100644
      public static final int MINECRAFT_1_15 = 573;
      public static final int MINECRAFT_1_15_1 = 575;
      public static final int MINECRAFT_1_15_2 = 578;
-+    public static final int MINECRAFT_1_16 = 722; // Waterfall (1.16 - 1.16-pre2)
++    public static final int MINECRAFT_1_16 = 725; // Waterfall (1.16 - 1.16-pre3)
      public static final List<String> SUPPORTED_VERSIONS = Arrays.asList(
              "1.8.x",
              "1.9.x",
