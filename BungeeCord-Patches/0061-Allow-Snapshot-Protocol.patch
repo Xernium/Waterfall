@@ -1,0 +1,38 @@
+From 4809190914da2724b42570cbf353751ed0cd0bdd Mon Sep 17 00:00:00 2001
+From: "Five (Xer)" <admin@xernium.com>
+Date: Fri, 22 Jan 2021 11:12:55 +0100
+Subject: [PATCH] Allow Snapshot Protocol
+
+
+diff --git a/protocol/src/main/java/net/md_5/bungee/protocol/ProtocolConstants.java b/protocol/src/main/java/net/md_5/bungee/protocol/ProtocolConstants.java
+index b831ce9a..1e7c584e 100644
+--- a/protocol/src/main/java/net/md_5/bungee/protocol/ProtocolConstants.java
++++ b/protocol/src/main/java/net/md_5/bungee/protocol/ProtocolConstants.java
+@@ -34,6 +34,12 @@ public class ProtocolConstants
+     public static final int MINECRAFT_1_16_3 = 753;
+     public static final int MINECRAFT_1_16_4 = 754;
+     public static final int MINECRAFT_1_17 = 755;
++
++    private static final int SNAPSHOT_BIT = 30;
++    public static final int SNAPSHOT_20W49A = (1 << SNAPSHOT_BIT) | 8; // Snapshot 20w49a
++    public static final int SNAPSHOT_20W51A = (1 << SNAPSHOT_BIT) | 9; // Snapshot 20w51a
++    public static final int SNAPSHOT_21W03A = (1 << SNAPSHOT_BIT) | 11; // Snapshot 21w03a
++
+     public static final List<String> SUPPORTED_VERSIONS = Arrays.asList(
+             "1.8.x",
+             "1.9.x",
+@@ -74,7 +80,10 @@ public class ProtocolConstants
+             ProtocolConstants.MINECRAFT_1_16_2,
+             ProtocolConstants.MINECRAFT_1_16_3,
+             ProtocolConstants.MINECRAFT_1_16_4,
+-            ProtocolConstants.MINECRAFT_1_17
++            ProtocolConstants.MINECRAFT_1_17,
++            SNAPSHOT_20W49A,
++            SNAPSHOT_20W51A,
++            SNAPSHOT_21W03A
+     );
+ 
+     public static final boolean isBeforeOrEq(int before, int other)
+-- 
+2.30.0
+
