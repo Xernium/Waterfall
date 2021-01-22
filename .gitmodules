@@ -1,3 +1,4 @@
 [submodule "BungeeCord"]
 	path = BungeeCord
-	url = https://github.com/SpigotMC/BungeeCord.git
+	url = https://github.com/Xernium/BungeeCord.git
+	branch = future/1.17
