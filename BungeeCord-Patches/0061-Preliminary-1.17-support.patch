@@ -1,4 +1,4 @@
-From fb04c1dec0a0fe645a2667101b8b207b9392ac00 Mon Sep 17 00:00:00 2001
+From d94595aa05a14d317482c06d331fa3252626810e Mon Sep 17 00:00:00 2001
 From: "Markus L. (FivePB)" <admin@fivepb.me>
 Date: Mon, 9 Nov 2020 09:47:50 +0100
 Subject: [PATCH] Preliminary 1.17 support
@@ -216,10 +216,10 @@ index d372933d..5eeb89d3 100644
  
              TO_SERVER.registerPacket(
 diff --git a/protocol/src/main/java/net/md_5/bungee/protocol/ProtocolConstants.java b/protocol/src/main/java/net/md_5/bungee/protocol/ProtocolConstants.java
-index 2202c4d3..283a9ff7 100644
+index 2202c4d3..8e140b1f 100644
 --- a/protocol/src/main/java/net/md_5/bungee/protocol/ProtocolConstants.java
 +++ b/protocol/src/main/java/net/md_5/bungee/protocol/ProtocolConstants.java
-@@ -33,6 +33,14 @@ public class ProtocolConstants
+@@ -33,6 +33,20 @@ public class ProtocolConstants
      public static final int MINECRAFT_1_16_2 = 751;
      public static final int MINECRAFT_1_16_3 = 753;
      public static final int MINECRAFT_1_16_4 = 754;
@@ -227,14 +227,20 @@ index 2202c4d3..283a9ff7 100644
 +    public static final int MINECRAFT_1_17 = 755; // Waterfall 1.17
 +
 +    private static final int SNAPSHOT_BIT = 30;
-+    public static final int SNAPSHOT_PROTOCOL = (1 << SNAPSHOT_BIT) | 15; // Snapshot 21w07a
++    public static final int s21w03a = (1 << SNAPSHOT_BIT) | 11;
++    public static final int s21w05a = (1 << SNAPSHOT_BIT) | 12;
++    public static final int s21w05b = (1 << SNAPSHOT_BIT) | 13;
++    public static final int s21w06a = (1 << SNAPSHOT_BIT) | 14;
++    public static final int s21w07a = (1 << SNAPSHOT_BIT) | 15;
++    public static final int s21w08a = (1 << SNAPSHOT_BIT) | 16;
++    public static final int s21w08b = (1 << SNAPSHOT_BIT) | 17;
 +
 +    // Waterfall 1.17 & snapshot/pre end
 +
      public static final List<String> SUPPORTED_VERSIONS = Arrays.asList(
              "1.8.x",
              "1.9.x",
-@@ -42,7 +50,8 @@ public class ProtocolConstants
+@@ -42,7 +56,8 @@ public class ProtocolConstants
              "1.13.x",
              "1.14.x",
              "1.15.x",
@@ -244,14 +250,21 @@ index 2202c4d3..283a9ff7 100644
      );
      public static final List<Integer> SUPPORTED_VERSION_IDS = Arrays.asList(
              ProtocolConstants.MINECRAFT_1_8,
-@@ -71,7 +80,9 @@ public class ProtocolConstants
+@@ -71,7 +86,16 @@ public class ProtocolConstants
              ProtocolConstants.MINECRAFT_1_16_1,
              ProtocolConstants.MINECRAFT_1_16_2,
              ProtocolConstants.MINECRAFT_1_16_3,
 -            ProtocolConstants.MINECRAFT_1_16_4
 +            ProtocolConstants.MINECRAFT_1_16_4,
 +            ProtocolConstants.MINECRAFT_1_17, // Waterfall 1.17
-+            ProtocolConstants.SNAPSHOT_PROTOCOL // Waterfall snapshot/pre
++            ProtocolConstants.s21w03a,
++            ProtocolConstants.s21w05a,
++            ProtocolConstants.s21w05b,
++            ProtocolConstants.s21w06a,
++            ProtocolConstants.s21w07a,
++            ProtocolConstants.s21w08a,
++            ProtocolConstants.s21w08b
++            // Waterfall snapshot/pre
      );
  
      public static final boolean isBeforeOrEq(int before, int other)
@@ -292,21 +305,27 @@ index 9daf7a73..0c21e5ed 100644
      }
  
 diff --git a/proxy/src/main/java/net/md_5/bungee/entitymap/EntityMap.java b/proxy/src/main/java/net/md_5/bungee/entitymap/EntityMap.java
-index db93d883..b1fc22cb 100644
+index db93d883..de602228 100644
 --- a/proxy/src/main/java/net/md_5/bungee/entitymap/EntityMap.java
 +++ b/proxy/src/main/java/net/md_5/bungee/entitymap/EntityMap.java
-@@ -74,6 +74,11 @@ public abstract class EntityMap
+@@ -74,6 +74,17 @@ public abstract class EntityMap
              case ProtocolConstants.MINECRAFT_1_16_3:
              case ProtocolConstants.MINECRAFT_1_16_4:
                  return EntityMap_1_16_2.INSTANCE;
 +            // Waterfall snapshot/pre start:
 +            case ProtocolConstants.MINECRAFT_1_17:
-+            case ProtocolConstants.SNAPSHOT_PROTOCOL:
++            case ProtocolConstants.s21w03a:
++            case ProtocolConstants.s21w05a:
++            case ProtocolConstants.s21w05b:
++            case ProtocolConstants.s21w06a:
++            case ProtocolConstants.s21w07a:
++            case ProtocolConstants.s21w08a:
++            case ProtocolConstants.s21w08b:
 +                return EntityMap_Dummy.INSTANCE;
 +            // Waterfall snapshot/pre end:
          }
          throw new RuntimeException( "Version " + version + " has no entity map" );
      }
 -- 
-2.30.0
+2.27.0.windows.1
 
