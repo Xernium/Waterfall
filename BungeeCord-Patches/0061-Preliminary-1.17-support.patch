@@ -1,4 +1,4 @@
-From 60088de4a0dd920f2c78354a89b9d9d00421a096 Mon Sep 17 00:00:00 2001
+From b725de763b68643300ea32d6e48ae20e343a0418 Mon Sep 17 00:00:00 2001
 From: "Markus L. (FivePB)" <admin@fivepb.me>
 Date: Mon, 9 Nov 2020 09:47:50 +0100
 Subject: [PATCH] Preliminary 1.17 support
@@ -18,7 +18,7 @@ index 252389bd..35f22e09 100644
  
  public abstract class AbstractPacketHandler
 diff --git a/protocol/src/main/java/net/md_5/bungee/protocol/Protocol.java b/protocol/src/main/java/net/md_5/bungee/protocol/Protocol.java
-index d372933d..fbb7fdfe 100644
+index d372933d..5f228a5a 100644
 --- a/protocol/src/main/java/net/md_5/bungee/protocol/Protocol.java
 +++ b/protocol/src/main/java/net/md_5/bungee/protocol/Protocol.java
 @@ -41,8 +41,8 @@ import net.md_5.bungee.protocol.packet.StatusResponse;
@@ -86,7 +86,7 @@ index d372933d..fbb7fdfe 100644
                      map(ProtocolConstants.MINECRAFT_1_15, 0x5A),
 -                    map(ProtocolConstants.MINECRAFT_1_16, 0x59)
 +                    map(ProtocolConstants.MINECRAFT_1_16, 0x59),
-+                    map(ProtocolConstants.MINECRAFT_1_17, 0x5A)  // Waterfall 20w49a 0x59 -> 0x5A
++                    map(ProtocolConstants.MINECRAFT_1_17, 0x64)  // Waterfall 20w49a 0x59 -> 0x5A, 21w08a 0x5A -> 0x64
              );
              TO_CLIENT.registerPacket(
                      EntityRemoveEffect.class,
@@ -96,7 +96,7 @@ index d372933d..fbb7fdfe 100644
                      map(ProtocolConstants.MINECRAFT_1_16, 0x38),
 -                    map(ProtocolConstants.MINECRAFT_1_16_2, 0x37)
 +                    map(ProtocolConstants.MINECRAFT_1_16_2, 0x37),
-+                    map(ProtocolConstants.MINECRAFT_1_17, 0x38) // Waterfall 20w49a 0x37 -> 0x38
++                    map(ProtocolConstants.MINECRAFT_1_17, 0x3B) // Waterfall 20w49a 0x37 -> 0x38, 21w08a 0x38 -> 0x3B
              );
              // Waterfall end
              TO_CLIENT.registerPacket(
