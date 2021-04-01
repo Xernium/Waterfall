@@ -1,4 +1,4 @@
-From 4a9d90dd6e9be08a899bf706a470531bd6f96a2a Mon Sep 17 00:00:00 2001
+From 3f79bcefd3cc97783faa1bb5afc923d6ee70a7d0 Mon Sep 17 00:00:00 2001
 From: "Markus L. (FivePB)" <admin@fivepb.me>
 Date: Mon, 9 Nov 2020 09:47:50 +0100
 Subject: [PATCH] Preliminary 1.17 support
@@ -316,7 +316,7 @@ index d372933d..6484c063 100644
                      {
                          // Mapping is non current, but the next one may be ok
 diff --git a/protocol/src/main/java/net/md_5/bungee/protocol/ProtocolConstants.java b/protocol/src/main/java/net/md_5/bungee/protocol/ProtocolConstants.java
-index 2202c4d3..21de42bd 100644
+index 2202c4d3..bbb3bcfe 100644
 --- a/protocol/src/main/java/net/md_5/bungee/protocol/ProtocolConstants.java
 +++ b/protocol/src/main/java/net/md_5/bungee/protocol/ProtocolConstants.java
 @@ -33,6 +33,14 @@ public class ProtocolConstants
@@ -327,7 +327,7 @@ index 2202c4d3..21de42bd 100644
 +    public static final int MINECRAFT_1_17 = 755; // Waterfall 1.17
 +
 +    private static final int SNAPSHOT_BIT = 30;
-+    public static final int SNAPSHOT_PROTOCOL = (1 << SNAPSHOT_BIT) | 19; // Snapshot 21w11a
++    public static final int SNAPSHOT_PROTOCOL = (1 << SNAPSHOT_BIT) | 20; // Snapshot 21w13a
 +
 +    // Waterfall 1.17 & snapshot/pre end
 +
@@ -881,7 +881,7 @@ index 7ec119ea..522f0f5f 100644
          } else
          {
 diff --git a/proxy/src/main/java/net/md_5/bungee/entitymap/EntityMap.java b/proxy/src/main/java/net/md_5/bungee/entitymap/EntityMap.java
-index db93d883..b1fc22cb 100644
+index db93d883..29ab510f 100644
 --- a/proxy/src/main/java/net/md_5/bungee/entitymap/EntityMap.java
 +++ b/proxy/src/main/java/net/md_5/bungee/entitymap/EntityMap.java
 @@ -74,6 +74,11 @@ public abstract class EntityMap
@@ -891,17 +891,17 @@ index db93d883..b1fc22cb 100644
 +            // Waterfall snapshot/pre start:
 +            case ProtocolConstants.MINECRAFT_1_17:
 +            case ProtocolConstants.SNAPSHOT_PROTOCOL:
-+                return EntityMap_Dummy.INSTANCE;
++                return EntityMap_1_17.INSTANCE;
 +            // Waterfall snapshot/pre end:
          }
          throw new RuntimeException( "Version " + version + " has no entity map" );
      }
 diff --git a/proxy/src/main/java/net/md_5/bungee/entitymap/EntityMap_1_17.java b/proxy/src/main/java/net/md_5/bungee/entitymap/EntityMap_1_17.java
 new file mode 100644
-index 00000000..2b38960a
+index 00000000..74712a1d
 --- /dev/null
 +++ b/proxy/src/main/java/net/md_5/bungee/entitymap/EntityMap_1_17.java
-@@ -0,0 +1,185 @@
+@@ -0,0 +1,188 @@
 +package net.md_5.bungee.entitymap;
 +
 +import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
@@ -943,7 +943,6 @@ index 00000000..2b38960a
 +        addRewrite( 0x60, ProtocolConstants.Direction.TO_CLIENT, true ); // Entity Teleport : PacketPlayOutEntityTeleport
 +        addRewrite( 0x62, ProtocolConstants.Direction.TO_CLIENT, true ); // Entity Properties : PacketPlayOutUpdateAttributes
 +        addRewrite( 0x63, ProtocolConstants.Direction.TO_CLIENT, true ); // Entity Effect : PacketPlayOutEntityEffect
-+        addRewrite( 0x34, ProtocolConstants.Direction.TO_CLIENT, true ); // Combat Kill : PlayOutCombatKill
 +
 +        addRewrite( 0x0D, ProtocolConstants.Direction.TO_SERVER, true ); // Use Entity : PacketPlayInUseEntity
 +        addRewrite( 0x1B, ProtocolConstants.Direction.TO_SERVER, true ); // Entity Action : PacketPlayInEntityAction
@@ -999,9 +998,9 @@ index 00000000..2b38960a
 +                DefinedPacket.readVarInt( packet );
 +                DefinedPacket.readUUID( packet );
 +                int type = DefinedPacket.readVarInt( packet );
-+                if ( type == 2 || type == 110 || type == 82 ) // arrow, fishing_bobber or spectral_arrow
++                if ( type == 2 || type == 111 || type == 83 ) // arrow, fishing_bobber or spectral_arrow
 +                {
-+                    if ( type == 2 || type == 82 ) // arrow or spectral_arrow
++                    if ( type == 2 || type == 83 ) // arrow or spectral_arrow
 +                    {
 +                        oldId = oldId + 1;
 +                        newId = newId + 1;
@@ -1033,9 +1032,13 @@ index 00000000..2b38960a
 +                    packet.writerIndex( previous );
 +                }
 +                break;
-+            //TODO FUCK
++            // the content hasn't changed. it will be okay... maybe...
 +            case 0x34 /* Combat Kill : PlayOutCombatKill */:
-+                // VarInt: Player ID
++                int position = packet.readerIndex();
++                rewriteVarInt( packet, oldId, newId, packet.readerIndex() );
++                packet.readerIndex( position );
++                DefinedPacket.readVarInt( packet );
++                rewriteInt( packet, oldId, newId, packet.readerIndex() );
 +            case 0x32 /* Combat End : PlayOutCombatEnd */:
 +                DefinedPacket.readVarInt( packet ); // Duration
 +                rewriteInt( packet, oldId, newId, packet.readerIndex() ); // Killer ID
