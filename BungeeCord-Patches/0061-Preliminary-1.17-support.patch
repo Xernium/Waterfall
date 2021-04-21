@@ -1,4 +1,4 @@
-From 318c7c15bdbec2f3e4f8b01a550d930b85e365ae Mon Sep 17 00:00:00 2001
+From 94751c3207462d5cf1d37c8b21b348109464c299 Mon Sep 17 00:00:00 2001
 From: "Markus L. (FivePB)" <admin@fivepb.me>
 Date: Mon, 9 Nov 2020 09:47:50 +0100
 Subject: [PATCH] Preliminary 1.17 support
@@ -316,7 +316,7 @@ index d372933d..6484c063 100644
                      {
                          // Mapping is non current, but the next one may be ok
 diff --git a/protocol/src/main/java/net/md_5/bungee/protocol/ProtocolConstants.java b/protocol/src/main/java/net/md_5/bungee/protocol/ProtocolConstants.java
-index 2202c4d3..b6f97fc0 100644
+index 2202c4d3..b21c5f62 100644
 --- a/protocol/src/main/java/net/md_5/bungee/protocol/ProtocolConstants.java
 +++ b/protocol/src/main/java/net/md_5/bungee/protocol/ProtocolConstants.java
 @@ -33,6 +33,14 @@ public class ProtocolConstants
@@ -327,7 +327,7 @@ index 2202c4d3..b6f97fc0 100644
 +    public static final int MINECRAFT_1_17 = 755; // Waterfall 1.17
 +
 +    private static final int SNAPSHOT_BIT = 30;
-+    public static final int SNAPSHOT_PROTOCOL = (1 << SNAPSHOT_BIT) | 22; // Snapshot 21w15a
++    public static final int SNAPSHOT_PROTOCOL = (1 << SNAPSHOT_BIT) | 23; // Snapshot 21w16a
 +
 +    // Waterfall 1.17 & snapshot/pre end
 +
