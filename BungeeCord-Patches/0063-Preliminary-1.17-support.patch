@@ -1,4 +1,4 @@
-From 94751c3207462d5cf1d37c8b21b348109464c299 Mon Sep 17 00:00:00 2001
+From 35fec4e487928ab0f19e2f6f695a3a563c33f169 Mon Sep 17 00:00:00 2001
 From: "Markus L. (FivePB)" <admin@fivepb.me>
 Date: Mon, 9 Nov 2020 09:47:50 +0100
 Subject: [PATCH] Preliminary 1.17 support
@@ -18,7 +18,7 @@ index 252389bd..35f22e09 100644
  
  public abstract class AbstractPacketHandler
 diff --git a/protocol/src/main/java/net/md_5/bungee/protocol/Protocol.java b/protocol/src/main/java/net/md_5/bungee/protocol/Protocol.java
-index d372933d..6484c063 100644
+index 0dffc8d2..7ad8ce25 100644
 --- a/protocol/src/main/java/net/md_5/bungee/protocol/Protocol.java
 +++ b/protocol/src/main/java/net/md_5/bungee/protocol/Protocol.java
 @@ -41,8 +41,8 @@ import net.md_5.bungee.protocol.packet.StatusResponse;
@@ -80,27 +80,7 @@ index d372933d..6484c063 100644
              );
              // Waterfall start
              TO_CLIENT.registerPacket(
-@@ -126,7 +131,8 @@ public enum Protocol
-                     map(ProtocolConstants.MINECRAFT_1_13, 0x53),
-                     map(ProtocolConstants.MINECRAFT_1_14, 0x59),
-                     map(ProtocolConstants.MINECRAFT_1_15, 0x5A),
--                    map(ProtocolConstants.MINECRAFT_1_16, 0x59)
-+                    map(ProtocolConstants.MINECRAFT_1_16, 0x59),
-+                    map(ProtocolConstants.MINECRAFT_1_17, 0x63) // Waterfall 21w10a 0x59 -> 0x63
-             );
-             TO_CLIENT.registerPacket(
-                     EntityRemoveEffect.class,
-@@ -139,7 +145,8 @@ public enum Protocol
-                     map(ProtocolConstants.MINECRAFT_1_14, 0x38),
-                     map(ProtocolConstants.MINECRAFT_1_15, 0x39),
-                     map(ProtocolConstants.MINECRAFT_1_16, 0x38),
--                    map(ProtocolConstants.MINECRAFT_1_16_2, 0x37)
-+                    map(ProtocolConstants.MINECRAFT_1_16_2, 0x37),
-+                    map(ProtocolConstants.MINECRAFT_1_17, 0x3A) // Waterfall 21w10a 0x37 -> 0x3A
-             );
-             // Waterfall end
-             TO_CLIENT.registerPacket(
-@@ -152,7 +159,8 @@ public enum Protocol
+@@ -138,7 +143,8 @@ public enum Protocol
                      map( ProtocolConstants.MINECRAFT_1_14, 0x33 ),
                      map( ProtocolConstants.MINECRAFT_1_15, 0x34 ),
                      map( ProtocolConstants.MINECRAFT_1_16, 0x33 ),
@@ -110,7 +90,7 @@ index d372933d..6484c063 100644
              );
              TO_CLIENT.registerPacket(
                      TabCompleteResponse.class,
-@@ -162,7 +170,8 @@ public enum Protocol
+@@ -148,7 +154,8 @@ public enum Protocol
                      map( ProtocolConstants.MINECRAFT_1_13, 0x10 ),
                      map( ProtocolConstants.MINECRAFT_1_15, 0x11 ),
                      map( ProtocolConstants.MINECRAFT_1_16, 0x10 ),
@@ -120,7 +100,7 @@ index d372933d..6484c063 100644
              );
              TO_CLIENT.registerPacket(
                      ScoreboardObjective.class,
-@@ -173,7 +182,8 @@ public enum Protocol
+@@ -159,7 +166,8 @@ public enum Protocol
                      map( ProtocolConstants.MINECRAFT_1_12_1, 0x42 ),
                      map( ProtocolConstants.MINECRAFT_1_13, 0x45 ),
                      map( ProtocolConstants.MINECRAFT_1_14, 0x49 ),
@@ -130,7 +110,7 @@ index d372933d..6484c063 100644
              );
              TO_CLIENT.registerPacket(
                      ScoreboardScore.class,
-@@ -184,7 +194,8 @@ public enum Protocol
+@@ -170,7 +178,8 @@ public enum Protocol
                      map( ProtocolConstants.MINECRAFT_1_12_1, 0x45 ),
                      map( ProtocolConstants.MINECRAFT_1_13, 0x48 ),
                      map( ProtocolConstants.MINECRAFT_1_14, 0x4C ),
@@ -140,7 +120,7 @@ index d372933d..6484c063 100644
              );
              TO_CLIENT.registerPacket(
                      ScoreboardDisplay.class,
-@@ -195,7 +206,8 @@ public enum Protocol
+@@ -181,7 +190,8 @@ public enum Protocol
                      map( ProtocolConstants.MINECRAFT_1_12_1, 0x3B ),
                      map( ProtocolConstants.MINECRAFT_1_13, 0x3E ),
                      map( ProtocolConstants.MINECRAFT_1_14, 0x42 ),
@@ -150,7 +130,7 @@ index d372933d..6484c063 100644
              );
              TO_CLIENT.registerPacket(
                      Team.class,
-@@ -206,7 +218,8 @@ public enum Protocol
+@@ -192,7 +202,8 @@ public enum Protocol
                      map( ProtocolConstants.MINECRAFT_1_12_1, 0x44 ),
                      map( ProtocolConstants.MINECRAFT_1_13, 0x47 ),
                      map( ProtocolConstants.MINECRAFT_1_14, 0x4B ),
@@ -160,7 +140,7 @@ index d372933d..6484c063 100644
              );
              TO_CLIENT.registerPacket(
                      PluginMessage.class,
-@@ -217,7 +230,8 @@ public enum Protocol
+@@ -203,7 +214,8 @@ public enum Protocol
                      map( ProtocolConstants.MINECRAFT_1_14, 0x18 ),
                      map( ProtocolConstants.MINECRAFT_1_15, 0x19 ),
                      map( ProtocolConstants.MINECRAFT_1_16, 0x18 ),
@@ -170,7 +150,7 @@ index d372933d..6484c063 100644
              );
              TO_CLIENT.registerPacket(
                      Kick.class,
-@@ -228,11 +242,13 @@ public enum Protocol
+@@ -214,11 +226,14 @@ public enum Protocol
                      map( ProtocolConstants.MINECRAFT_1_14, 0x1A ),
                      map( ProtocolConstants.MINECRAFT_1_15, 0x1B ),
                      map( ProtocolConstants.MINECRAFT_1_16, 0x1A ),
@@ -178,6 +158,7 @@ index d372933d..6484c063 100644
 +                    map( ProtocolConstants.MINECRAFT_1_16_2, 0x19 ),
 +                    map( ProtocolConstants.MINECRAFT_1_17, 0x1A ) // Waterfall 21w10a 0x19 -> 0x1A
              );
++            // Waterfall start
              TO_CLIENT.registerPacket(
 -                    Title.class,
 -                    Title::new, // Waterfall - speed up packet construction
@@ -187,7 +168,7 @@ index d372933d..6484c063 100644
                      map( ProtocolConstants.MINECRAFT_1_8, 0x45 ),
                      map( ProtocolConstants.MINECRAFT_1_12, 0x47 ),
                      map( ProtocolConstants.MINECRAFT_1_12_1, 0x48 ),
-@@ -241,6 +257,31 @@ public enum Protocol
+@@ -227,6 +242,32 @@ public enum Protocol
                      map( ProtocolConstants.MINECRAFT_1_15, 0x50 ),
                      map( ProtocolConstants.MINECRAFT_1_16, 0x4F )
              );
@@ -216,10 +197,11 @@ index d372933d..6484c063 100644
 +                    TitleClearAndReset::new, // Waterfall - speed up packet construction
 +                    map( ProtocolConstants.MINECRAFT_1_17, 0x10 ) // Waterfall 21w08a 0x10
 +            );
++            // Waterfall end
              TO_CLIENT.registerPacket(
                      PlayerListHeaderFooter.class,
                      PlayerListHeaderFooter::new, // Waterfall - speed up packet construction
-@@ -252,7 +293,8 @@ public enum Protocol
+@@ -238,7 +279,8 @@ public enum Protocol
                      map( ProtocolConstants.MINECRAFT_1_13, 0x4E ),
                      map( ProtocolConstants.MINECRAFT_1_14, 0x53 ),
                      map( ProtocolConstants.MINECRAFT_1_15, 0x54 ),
@@ -229,7 +211,7 @@ index d372933d..6484c063 100644
              );
              TO_CLIENT.registerPacket(
                      EntityStatus.class,
-@@ -263,7 +305,8 @@ public enum Protocol
+@@ -249,7 +291,8 @@ public enum Protocol
                      map( ProtocolConstants.MINECRAFT_1_14, 0x1B ),
                      map( ProtocolConstants.MINECRAFT_1_15, 0x1C ),
                      map( ProtocolConstants.MINECRAFT_1_16, 0x1B ),
@@ -239,7 +221,7 @@ index d372933d..6484c063 100644
              );
              TO_CLIENT.registerPacket(
                      Commands.class,
-@@ -271,21 +314,24 @@ public enum Protocol
+@@ -257,21 +300,24 @@ public enum Protocol
                      map( ProtocolConstants.MINECRAFT_1_13, 0x11 ),
                      map( ProtocolConstants.MINECRAFT_1_15, 0x12 ),
                      map( ProtocolConstants.MINECRAFT_1_16, 0x11 ),
@@ -267,7 +249,7 @@ index d372933d..6484c063 100644
              );
  
              TO_SERVER.registerPacket(
-@@ -297,7 +343,8 @@ public enum Protocol
+@@ -283,7 +329,8 @@ public enum Protocol
                      map( ProtocolConstants.MINECRAFT_1_12_1, 0x0B ),
                      map( ProtocolConstants.MINECRAFT_1_13, 0x0E ),
                      map( ProtocolConstants.MINECRAFT_1_14, 0x0F ),
@@ -277,7 +259,7 @@ index d372933d..6484c063 100644
              );
              TO_SERVER.registerPacket(
                      Chat.class,
-@@ -335,7 +382,8 @@ public enum Protocol
+@@ -321,7 +368,8 @@ public enum Protocol
                      map( ProtocolConstants.MINECRAFT_1_12, 0x0A ),
                      map( ProtocolConstants.MINECRAFT_1_12_1, 0x09 ),
                      map( ProtocolConstants.MINECRAFT_1_13, 0x0A ),
@@ -287,7 +269,7 @@ index d372933d..6484c063 100644
              );
          }
      },
-@@ -539,7 +587,12 @@ public enum Protocol
+@@ -525,7 +573,12 @@ public enum Protocol
              }
          }
  
@@ -301,7 +283,7 @@ index d372933d..6484c063 100644
          {
              // Waterfall start - speed up packet construction
              /*
-@@ -558,6 +611,13 @@ public enum Protocol
+@@ -544,6 +597,13 @@ public enum Protocol
                          continue;
                      }
  
@@ -316,7 +298,7 @@ index d372933d..6484c063 100644
                      {
                          // Mapping is non current, but the next one may be ok
 diff --git a/protocol/src/main/java/net/md_5/bungee/protocol/ProtocolConstants.java b/protocol/src/main/java/net/md_5/bungee/protocol/ProtocolConstants.java
-index 2202c4d3..b21c5f62 100644
+index 2202c4d3..aebe6b2c 100644
 --- a/protocol/src/main/java/net/md_5/bungee/protocol/ProtocolConstants.java
 +++ b/protocol/src/main/java/net/md_5/bungee/protocol/ProtocolConstants.java
 @@ -33,6 +33,14 @@ public class ProtocolConstants
@@ -327,7 +309,7 @@ index 2202c4d3..b21c5f62 100644
 +    public static final int MINECRAFT_1_17 = 755; // Waterfall 1.17
 +
 +    private static final int SNAPSHOT_BIT = 30;
-+    public static final int SNAPSHOT_PROTOCOL = (1 << SNAPSHOT_BIT) | 23; // Snapshot 21w16a
++    public static final int SNAPSHOT_PROTOCOL = (1 << SNAPSHOT_BIT) | 25; // Snapshot 21w17a
 +
 +    // Waterfall 1.17 & snapshot/pre end
 +
@@ -898,10 +880,10 @@ index db93d883..29ab510f 100644
      }
 diff --git a/proxy/src/main/java/net/md_5/bungee/entitymap/EntityMap_1_17.java b/proxy/src/main/java/net/md_5/bungee/entitymap/EntityMap_1_17.java
 new file mode 100644
-index 00000000..43bd0dd4
+index 00000000..873132cf
 --- /dev/null
 +++ b/proxy/src/main/java/net/md_5/bungee/entitymap/EntityMap_1_17.java
-@@ -0,0 +1,188 @@
+@@ -0,0 +1,181 @@
 +package net.md_5.bungee.entitymap;
 +
 +import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
@@ -931,6 +913,8 @@ index 00000000..43bd0dd4
 +        addRewrite( 0x29, ProtocolConstants.Direction.TO_CLIENT, true ); // Entity Relative Move : PacketPlayOutRelEntityMove
 +        addRewrite( 0x2A, ProtocolConstants.Direction.TO_CLIENT, true ); // Entity Look and Relative Move : PacketPlayOutRelEntityMoveLook
 +        addRewrite( 0x2B, ProtocolConstants.Direction.TO_CLIENT, true ); // Entity Look : PacketPlayOutEntityLook
++        addRewrite( 0x34, ProtocolConstants.Direction.TO_CLIENT, true ); // Combat Kill : PlayOutCombatKill
++        addRewrite( 0x39, ProtocolConstants.Direction.TO_CLIENT, true ); // Remove Entity : PacketPlayOutRemoveDestroy
 +        addRewrite( 0x3A, ProtocolConstants.Direction.TO_CLIENT, true ); // Remove Entity Effect : PacketPlayOutRemoveEntityEffect
 +        addRewrite( 0x3D, ProtocolConstants.Direction.TO_CLIENT, true ); // Entity Head Look : PacketPlayOutEntityHeadRotation
 +        addRewrite( 0x46, ProtocolConstants.Direction.TO_CLIENT, true ); // Camera : PacketPlayOutCamera
@@ -972,27 +956,18 @@ index 00000000..43bd0dd4
 +                DefinedPacket.readVarInt( packet );
 +                jumpIndex = packet.readerIndex();
 +                // Fall through on purpose to int array of IDs
-+            case 0x39 /* Destroy Entities : PacketPlayOutEntityDestroy */:
-+                int count = DefinedPacket.readVarInt( packet );
-+                int[] ids = new int[ count ];
-+                for ( int i = 0; i < count; i++ )
++            case 0x39 /* Remove Entity : PacketPlayOutRemoveDestroy */:
++                int entityId = DefinedPacket.readVarInt( packet );
++                if ( entityId == oldId )
 +                {
-+                    ids[i] = DefinedPacket.readVarInt( packet );
++                    entityId = newId;
++                } else if ( entityId == newId )
++                {
++                    entityId = oldId;
 +                }
 +                packet.readerIndex( jumpIndex );
 +                packet.writerIndex( jumpIndex );
-+                DefinedPacket.writeVarInt( count, packet );
-+                for ( int id : ids )
-+                {
-+                    if ( id == oldId )
-+                    {
-+                        id = newId;
-+                    } else if ( id == newId )
-+                    {
-+                        id = oldId;
-+                    }
-+                    DefinedPacket.writeVarInt( id, packet );
-+                }
++                DefinedPacket.writeVarInt( entityId, packet );
 +                break;
 +            case 0x00 /* Spawn Object : PacketPlayOutSpawnEntity */:
 +                DefinedPacket.readVarInt( packet );
@@ -1032,13 +1007,13 @@ index 00000000..43bd0dd4
 +                    packet.writerIndex( previous );
 +                }
 +                break;
-+            // the content hasn't changed. it will be okay... maybe...
 +            case 0x34 /* Combat Kill : PlayOutCombatKill */:
 +                int position = packet.readerIndex();
 +                rewriteVarInt( packet, oldId, newId, packet.readerIndex() );
 +                packet.readerIndex( position );
 +                DefinedPacket.readVarInt( packet );
 +                rewriteInt( packet, oldId, newId, packet.readerIndex() );
++                break;
 +            case 0x32 /* Combat End : PlayOutCombatEnd */:
 +                DefinedPacket.readVarInt( packet ); // Duration
 +                rewriteInt( packet, oldId, newId, packet.readerIndex() ); // Killer ID
