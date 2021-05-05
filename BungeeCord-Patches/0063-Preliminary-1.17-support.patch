@@ -1,4 +1,4 @@
-From 35fec4e487928ab0f19e2f6f695a3a563c33f169 Mon Sep 17 00:00:00 2001
+From 887135c80d4bc1cc793060fee55e496bad2f34d9 Mon Sep 17 00:00:00 2001
 From: "Markus L. (FivePB)" <admin@fivepb.me>
 Date: Mon, 9 Nov 2020 09:47:50 +0100
 Subject: [PATCH] Preliminary 1.17 support
@@ -298,7 +298,7 @@ index 0dffc8d2..7ad8ce25 100644
                      {
                          // Mapping is non current, but the next one may be ok
 diff --git a/protocol/src/main/java/net/md_5/bungee/protocol/ProtocolConstants.java b/protocol/src/main/java/net/md_5/bungee/protocol/ProtocolConstants.java
-index 2202c4d3..aebe6b2c 100644
+index 2202c4d3..ab08c5aa 100644
 --- a/protocol/src/main/java/net/md_5/bungee/protocol/ProtocolConstants.java
 +++ b/protocol/src/main/java/net/md_5/bungee/protocol/ProtocolConstants.java
 @@ -33,6 +33,14 @@ public class ProtocolConstants
@@ -309,7 +309,7 @@ index 2202c4d3..aebe6b2c 100644
 +    public static final int MINECRAFT_1_17 = 755; // Waterfall 1.17
 +
 +    private static final int SNAPSHOT_BIT = 30;
-+    public static final int SNAPSHOT_PROTOCOL = (1 << SNAPSHOT_BIT) | 25; // Snapshot 21w17a
++    public static final int SNAPSHOT_PROTOCOL = (1 << SNAPSHOT_BIT) | 26; // Snapshot 21w18a
 +
 +    // Waterfall 1.17 & snapshot/pre end
 +
@@ -880,10 +880,10 @@ index db93d883..29ab510f 100644
      }
 diff --git a/proxy/src/main/java/net/md_5/bungee/entitymap/EntityMap_1_17.java b/proxy/src/main/java/net/md_5/bungee/entitymap/EntityMap_1_17.java
 new file mode 100644
-index 00000000..873132cf
+index 00000000..74f8f4ed
 --- /dev/null
 +++ b/proxy/src/main/java/net/md_5/bungee/entitymap/EntityMap_1_17.java
-@@ -0,0 +1,181 @@
+@@ -0,0 +1,201 @@
 +package net.md_5.bungee.entitymap;
 +
 +import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
@@ -955,7 +955,27 @@ index 00000000..873132cf
 +            case 0x53 /* Set Passengers : PacketPlayOutMount */:
 +                DefinedPacket.readVarInt( packet );
 +                jumpIndex = packet.readerIndex();
-+                // Fall through on purpose to int array of IDs
++                int count = DefinedPacket.readVarInt( packet );
++                int[] ids = new int[ count ];
++                for ( int i = 0; i < count; i++ )
++                {
++                    ids[i] = DefinedPacket.readVarInt( packet );
++                }
++                packet.readerIndex( jumpIndex );
++                packet.writerIndex( jumpIndex );
++                DefinedPacket.writeVarInt( count, packet );
++                for ( int id : ids )
++                {
++                    if ( id == oldId )
++                    {
++                        id = newId;
++                    } else if ( id == newId )
++                    {
++                        id = oldId;
++                    }
++                    DefinedPacket.writeVarInt( id, packet );
++                }
++                break;
 +            case 0x39 /* Remove Entity : PacketPlayOutRemoveDestroy */:
 +                int entityId = DefinedPacket.readVarInt( packet );
 +                if ( entityId == oldId )
